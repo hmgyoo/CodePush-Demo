@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import CodePush from 'react-native-code-push';
 
+const CODE_PUSH_OPTIONS = {
+  checkFrequency:CodePush.CheckFrequency.ON_APP_START
+}
+
 const App = () => {
+
+  // use effect hook for CodePush
+  useEffect(() => {
+    CodePush.sync({installMode:CodePush.InstallMode.IMMEDIATE},syncWithCodePush);
+  }, [])
+
+  const syncWithCodePush = status => {
+    console.log('CodePush sync status', status);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>
@@ -51,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CodePush(App);
+export default CodePush(CODE_PUSH_OPTIONS)(App);
